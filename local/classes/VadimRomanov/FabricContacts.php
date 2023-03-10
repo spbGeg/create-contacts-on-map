@@ -10,13 +10,13 @@ use Bitrix\Iblock;
 use Bitrix\Main\SystemException;
 use Recoil\ReferenceKernel\ReferenceKernel;
 
-class FabricContacts extends IBlockMigration
+class FabricContacts extends HelperIblock
 {
     /**
      * data for create iblock
      * @var array[]
      */
-    private $iblock = [
+    private $iblockData = [
         'CODE' => 'contacts',
         'NAME' => 'Контакты'
     ];
@@ -185,22 +185,22 @@ class FabricContacts extends IBlockMigration
      */
     private function createIblock(array $result): array
     {
-        $this->iblock['ID'] = $this->findIblock($this->iblockType['ID'], $this->iblock['CODE']);
+        $this->iblockData['ID'] = $this->findIblock($this->iblockType['ID'], $this->iblockData['CODE']);
         //create iblock
-        if (empty($this->iblock['ID'])) {
+        if (empty($this->iblockData['ID'])) {
 
-                $result =  $this->addIblock($this->iblockType['ID'], $this->iblock['CODE'], $this->iblock['NAME']);
+                $result =  $this->addIblock($this->iblockType['ID'], $this->iblockData['CODE'], $this->iblockData['NAME']);
             if (!isset($resIblock['ERROR'])) {
                 $result['MSG'][] = 'Инфоблок Контакты успешно добавлен';
                 $result['STATUS'] = 'iblockCreated';
-                $this->iblock['ID'] = $result['IBLOCK']['ID'];
+                $this->iblockData['ID'] = $result['IBLOCK']['ID'];
             } else {
                 $result['STATUS'] = 'fail';
                 throw new \Exception("Ошибка добавления инфоблока " . $resIblock['ERROR']);
             }
         }
 
-        if (empty($this->iblock['ID'])) {
+        if (empty($this->iblockData['ID'])) {
             throw new \Exception("Инфоблок не удалось добавить");
         } else {
             return $result;
@@ -218,10 +218,10 @@ class FabricContacts extends IBlockMigration
 
         //create property if empty
         $propertyCodeIblock = array_keys($this->iblockFields);
-        $issetProp = $this->isExistPropertyFields($this->iblock['ID'], $propertyCodeIblock[0]);
+        $issetProp = $this->isExistPropertyFields($this->iblockData['ID'], $propertyCodeIblock[0]);
         if (empty($issetProp)) {
             $result['MSG'][] = 'Свойства инфоблока Контакты успешно добавлены';
-            $this->addPropertyFields($this->iblock['ID'], $this->iblockFields);
+            $this->addPropertyFields($this->iblockData['ID'], $this->iblockFields);
         }
         return $result;
     }
@@ -235,9 +235,9 @@ class FabricContacts extends IBlockMigration
      */
     private function createElementsIblock(array $result) : array
     {
-        if (!$this->isExistElements($this->iblock['CODE'])) {
+        if (!$this->isExistElements($this->iblockData['CODE'])) {
             foreach ($this->arContactElements as $item) {
-                $resAddEl = $this->addElementIblock($this->iblock['ID'], $item);
+                $resAddEl = $this->addElementIblock($this->iblockData['ID'], $item);
                 if ($resAddEl['ID']) {
                     $result['MSG'][] = $resAddEl['MSG'];
                 }

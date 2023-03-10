@@ -136,7 +136,6 @@ JSMapContacts.prototype.showMap = async function () {
                     resolve(data.items);
                 } else {
                     reject(data.error);
-
                 }
 
             }
@@ -159,6 +158,7 @@ JSMapContacts.prototype.showMap = async function () {
 
     ).catch( value =>{
         $curapp.setError(value)
+        $curapp.setDownloadProccess(false);
     })
 }
 

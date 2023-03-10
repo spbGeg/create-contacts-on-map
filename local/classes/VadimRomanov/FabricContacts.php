@@ -137,7 +137,7 @@ class FabricContacts extends HelperIblock
     }
 
     /**
-     * Method for create type iblock
+     * Method for check exist type iblock, if no exist create it
      *
      * @param $result
      * @return array
@@ -145,7 +145,7 @@ class FabricContacts extends HelperIblock
      * @throws \Bitrix\Main\ArgumentException
      * @throws \Bitrix\Main\ObjectPropertyException
      */
-    private function createTypeIblock($result)
+    private function checkAndCreateTypeIblock($result)
     {
         //check isset iblock type
         $resTypeIblock = $this->issetTypeIblock($this->iblockType['ID']);
@@ -177,13 +177,13 @@ class FabricContacts extends HelperIblock
     }
 
     /**
-     * Method for create iblock
+     * Method for check exist  iblock, if no exist create it
      *
      * @param array $result
      * @return array
      * @throws \Exception
      */
-    private function createIblock(array $result): array
+    private function checkAndCreateIblock(array $result): array
     {
         $this->iblockData['ID'] = $this->findIblock($this->iblockType['ID'], $this->iblockData['CODE']);
         //create iblock
@@ -208,12 +208,12 @@ class FabricContacts extends HelperIblock
     }
 
     /**
-     * method for create property for iblock
+     * Method for check exist property iblock, if no exist create them
      *
      * @param array $result
      * @return array
      */
-    private function createPropIblock(array $result) :array
+    private function checkAndCreatePropIblock(array $result) :array
     {
 
         //create property if empty
@@ -227,13 +227,13 @@ class FabricContacts extends HelperIblock
     }
 
     /**
-     * Method for create demo elements
+     * Method for check exist demo elements iblock, if no exist create them
      *
      * @param array $result
      * @return array
      * @throws \Exception
      */
-    private function createElementsIblock(array $result) : array
+    private function checkAndCreateElementsIblock(array $result) : array
     {
         if (!$this->isExistElements($this->iblockData['CODE'])) {
             foreach ($this->arContactElements as $item) {
@@ -258,7 +258,8 @@ class FabricContacts extends HelperIblock
     }
 
     /**
-     * This method create typeIblock, iblock, it`s prop, it`s demo elements
+     * This method check exist typeIblock, iblock, it`s prop, it`s demo elements,
+     * if no exist create them
      * @return array
      */
     public function create(): array
@@ -268,10 +269,10 @@ class FabricContacts extends HelperIblock
         $result = [];
 
         try {
-                $result =  $this->createTypeIblock($result);
-                $result = $this->createIblock($result);
-                $result =  $this->createPropIblock($result);
-                $result =  $this->createElementsIblock($result);
+                $result =  $this->checkAndCreateTypeIblock($result);
+                $result = $this->checkAndCreateIblock($result);
+                $result =  $this->checkAndCreatePropIblock($result);
+                $result =  $this->checkAndCreateElementsIblock($result);
 
         } catch (\Exception $e) {
             $result['ERROR'] = $e->getMessage();

@@ -7,7 +7,7 @@
 * клонируем https://github.com/spbGeg/create-contacts-on-map.git репозиторий в отдельную директорию 
 * переносим все содержимое папки create-contacts-on-map на сайт 
 * переключиться на шаблон Контакты в настройках сайта
-*  в косоли из корня сайта запускаем скрипт
+*  в консоли из корня сайта запускаем скрипт создания demo контактов
 ```
 php -f local/php_interface/create_elements_contacts.php
 ```
